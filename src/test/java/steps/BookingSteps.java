@@ -47,7 +47,7 @@ public class BookingSteps {
     @Step("update the booking with id : {0}")
     public void updateBookingById(int bookingId) throws Exception {
         String token = ScenarioContext.getToken();
-        Response response = bookingClients.updateBookingById(bookingId, token);
+        Response response = bookingClients.updateBookingById(bookingId);
 
         assertThat(response.statusCode()).isEqualTo(200);
 
@@ -64,7 +64,7 @@ public class BookingSteps {
     @Step("Delete booking with id: {0}")
     public void deleteBookingById(int bookingId) throws Exception {
         String token = ScenarioContext.getToken();
-        Response response = bookingClients.deleteBookingById(bookingId, token);
+        Response response = bookingClients.deleteBookingById(bookingId);
 
         assertThat(response.statusCode()).isEqualTo(201);
         assertThat(response.getBody().asString()).isEqualTo("Created");
