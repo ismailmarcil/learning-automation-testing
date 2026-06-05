@@ -37,6 +37,44 @@ public class BookingApiClients {
                 .extract().response();
     }
 
+    public Response updateBookingById(int bookingId, String token) throws Exception {
+        String payload = new String(Files.readAllBytes(
+                Paths.get("src/test/resources/payloads/updateBooking.json")));
+        return SerenityRest
+                .given()
+                .baseUri(baseUrl)
+                .contentType("application/json")
+                .accept("application/json")
+                .header("Cookie", "token="+token)
+                .body(payload)
+                .when()
+                .put("/booking/"+bookingId)
+                .then()
+                .extract().response();
+    }
+
+    public Response deleteBookingById(int bookingId, String token) throws Exception {
+        return SerenityRest
+                .given()
+                .baseUri(baseUrl)
+                .contentType("application/json")
+                .header("Cookie", "token=" + token)
+                .when()
+                .delete("/booking/" + bookingId)
+                .then()
+                .extract().response();
+    }
+
+    public Response getBookingByIdNotFound(int bookingId) throws Exception {
+        return SerenityRest
+                .given()
+                .baseUri(baseUrl)
+                .accept("application/json")
+                .when()
+                .get("/booking/" + bookingId)
+                .then()
+                .extract().response();
+    }
 
 
 

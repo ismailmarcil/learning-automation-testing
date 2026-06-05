@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import steps.AuthSteps;
 import steps.BookingSteps;
+import support.ScenarioContext;
 
 @ExtendWith(SerenityJUnit5Extension.class)
 public class PublicAPISmokeFlowTest {
@@ -17,8 +18,11 @@ public class PublicAPISmokeFlowTest {
         authSteps.authenticateWithValidCredentials();
         authSteps.authenticateWithInvalidCredentials();
         bookingSteps.createValidBooking();
-        bookingSteps.getBookingById();
-
+        bookingSteps.getBookingById(ScenarioContext.getBookingId());
+        bookingSteps.updateBookingById(ScenarioContext.getBookingId());
+        bookingSteps.deleteBookingById(ScenarioContext.getBookingId());
+        bookingSteps.getBookingByIdNotFound(ScenarioContext.getBookingId());
+        bookingSteps.getBookingByIdNotFound(ScenarioContext.getBookingId());
     }
 
 
