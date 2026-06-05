@@ -17,6 +17,7 @@ public class PublicAPISmokeFlowTest {
         authSteps.authenticateWithValidCredentials();
         authSteps.authenticateWithInvalidCredentials();
         bookingSteps.createValidBooking();
+        bookingSteps.getBookingById();
 
     }
 

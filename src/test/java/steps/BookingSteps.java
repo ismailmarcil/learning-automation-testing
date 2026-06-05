@@ -27,4 +27,18 @@ public class BookingSteps {
 
         ScenarioContext.setBookingId(bookingId);
     }
+
+    @Step
+    public void getBookingById() throws Exception {
+        int bookingID= ScenarioContext.getBookingId();
+
+        Response response = bookingClients.getBookingById(bookingID);
+
+        assertThat(response.statusCode()).isEqualTo(200);
+        //Response fiels is the same as the initial booking
+        assertThat(response.jsonPath().getString("booking.firstname")).isEqualTo("Ismail");
+        assertThat(response.jsonPath().getString("booking.lastname")).isEqualTo("Marcil");
+        assertThat(response.jsonPath().getInt("booking.totalprice")).isEqualTo(150);
+
+    }
 }

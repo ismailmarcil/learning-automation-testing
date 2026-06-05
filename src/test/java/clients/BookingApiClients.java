@@ -26,6 +26,19 @@ public class BookingApiClients {
                 .extract().response();
     }
 
+    public Response getBookingById(int bookingID) throws Exception {
+        return SerenityRest
+                .given()
+                .baseUri(baseUrl)
+                .accept("application/json")
+                .when()
+                .get("/booking/"+bookingID)
+                .then()
+                .extract().response();
+    }
+
+
+
 
 
 }
