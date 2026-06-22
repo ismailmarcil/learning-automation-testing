@@ -1,8 +1,17 @@
 package support;
 
-public class ConfigReader {
-    public static String getBaseUrl() { //static so we don't have to create an instance of ConfigReader to call the method.
-        return "https://restful-booker.herokuapp.com";
+import net.serenitybdd.model.environment.EnvironmentSpecificConfiguration;
+import net.thucydides.model.util.EnvironmentVariables;
+import net.thucydides.model.environment.SystemEnvironmentVariables;
 
+public class ConfigReader {
+
+    private static EnvironmentVariables environmentVariables
+            = SystemEnvironmentVariables.createEnvironmentVariables();
+
+    public static String getBaseUrl() {
+        return EnvironmentSpecificConfiguration
+                .from(environmentVariables)
+                .getProperty("base.url");
     }
 }

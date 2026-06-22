@@ -22,7 +22,7 @@ public class PublicAPISmokeFlowTest {
         bookingSteps.updateBookingById(ScenarioContext.getBookingId());
         bookingSteps.deleteBookingById(ScenarioContext.getBookingId());
         bookingSteps.getBookingByIdNotFound(ScenarioContext.getBookingId());
-        bookingSteps.getBookingByIdNotFound(ScenarioContext.getBookingId());
+
     }
 
 

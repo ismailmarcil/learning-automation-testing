@@ -46,7 +46,7 @@ public class BookingApiClients {
                 .baseUri(baseUrl)
                 .contentType("application/json")
                 .accept("application/json")
-                .header("Cookie", PayloadHelper.resolvePlaceholders("token={{token}})"))
+                .header("Cookie", PayloadHelper.resolvePlaceholders("token={{token}}"))
                 .body(payload)
                 .when()
                 .put("/booking/"+bookingId)
