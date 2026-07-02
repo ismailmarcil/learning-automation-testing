@@ -9,13 +9,11 @@ const files = fs.readdirSync(serenityDir).filter(f => f.endsWith('.json') && !f.
 const tests = files.map(file => {
     const raw = fs.readFileSync(path.join(serenityDir, file), 'utf8');
     return JSON.parse(raw);
-}).filter(t => t.title); // only keep actual test results
+}).filter(t => t.title && !t.title.startsWith('[')); // only keep actual test results
 
-//sort by result (failure firrst)
+//sort by run time
 tests.sort((a, b) => {
-    if (a.result === 'SUCCESS' && b.result !== 'SUCCESS') return 1;
-    if (a.result !== 'SUCCESS' && b.result === 'SUCCESS') return -1;
-    return 0;
+    return new Date(a.startTime) - new Date(b.startTime);
 });
 
 // 4. Helper color for tge badge result
@@ -45,17 +43,20 @@ const failed = tests.filter(t => t.result !== 'SUCCESS').length;
 
 // 8. Build test cards HTML
 const testCards = tests.map(test => {
-    const step = test.testSteps?.[0];
-    const query = step?.restQuery;
-
-    const stepHtml = query ? `
+    const stepsHtml = (test.testSteps || []).map(step => {
+        const query = step?.restQuery;
+        if (!query) return '';
+        return `
         <div style="background:#f8f9fa;border-radius:6px;padding:12px;margin-top:10px;font-size:13px;">
+            <div style="font-weight:1000;margin-bottom:12px;">Step ${step.number} : </div> 
+            <div></div>
             <div><strong>${query.method}</strong> <span style="color:#555;">${query.path}</span></div>
             <div style="margin-top:6px;">Status: <strong>${query.statusCode}</strong></div>
             ${query.content ? `<div style="margin-top:6px;"><strong>Request Body:</strong><pre style="margin:4px 0;white-space:pre-wrap;font-size:12px;">${query.content}</pre></div>` : ''}
             ${query.responseBody ? `<div style="margin-top:6px;"><strong>Response Body:</strong><pre style="margin:4px 0;white-space:pre-wrap;font-size:12px;">${query.responseBody}</pre></div>` : ''}
-        </div>` : '';
-    return `
+        </div>`;
+}).join('');
+        return `
     <div style="background:white;border-radius:8px;padding:20px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.08);border-left:4px solid ${badgeColor(test.result)};">
         <div style="display:flex;justify-content:space-between;align-items:center;">
             <div>
@@ -67,7 +68,7 @@ const testCards = tests.map(test => {
                 <span style="background:${badgeColor(test.result)};color:white;padding:3px 10px;border-radius:4px;font-size:13px;">${test.result}</span>
             </div>
         </div>
-        ${stepHtml}
+        ${stepsHtml}
     </div>`;
 }).join('');
 
